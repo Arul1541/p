@@ -25,7 +25,7 @@ This is an Angular project for a product catalog with features like filtering, s
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/angular-product-catalog.git
+    git clone https://github.com/Arul1541/product-catalog.git
     ```
 
 2. Navigate to the project directory:
