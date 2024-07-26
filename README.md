@@ -31,7 +31,7 @@ This is an Angular project for a product catalog with features like filtering, s
 2. Navigate to the project directory:
 
     ```bash
-    cd angular-product-catalog
+    cd product-catalog
     ```
 
 3. Install the dependencies:
