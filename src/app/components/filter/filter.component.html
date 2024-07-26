@@ -1,0 +1,22 @@
+<div class="filter-container">
+    <h3>Filter Products</h3>
+    <div>
+      <label for="search">Search:</label>
+      <input id="search" type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search by product name">
+    </div>
+    <div>
+        <label for="sort">Search by Category:</label>
+        <select id="category" [(ngModel)]="category" (change)="applyFilter()">
+            <option value="" selected disabled hidden>Select Option</option>
+            <option value="Home Entertainment">Home Entertainment</option>
+            <option value="Home Appliances">Home Appliances</option>
+            <option value="Home Appliances">Home Appliances</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Smart Home">Smart Home</option>
+            <option value="Outdoor">Outdoor</option>
+            <option value="Electronics">Electronics</option>
+
+          </select>
+    </div>
+   
+  </div>

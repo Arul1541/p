@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="navbar">
+        <app-filter (filterChange)="onFilterChange($event)"></app-filter>
+        <app-sort (sortChanged)="onSortChanged($event)"></app-sort>
+      </div>
+   <div class="products">
+    <header>
+        <h1>Product Catalog</h1>
+        <div class="cart">
+            <img src="assets/images/cart.png" alt="Cart">
+            <span>{{ cartCount }}</span>
+        </div>
+      </header>
+      <div class="no-product" *ngIf="noProducts" >
+          <h2>No Product Found!!!</h2>
+        </div>
+      <div class="product-grid" *ngIf="!noProducts">
+          
+        <div class="product-card" *ngFor="let product of paginatedProducts" >
+          <img [src]="product.image" alt="{{ product.name }}">
+          <h2>{{ product.name }}</h2>
+          <h4>{{ product.category }}</h4>
+          <p>{{ product.description }}</p>
+          <p class="price">Rs.{{ product.price }}</p>
+          <button (click)="addToCart(product)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="pagination"  *ngIf="!noProducts">
+          <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+   </div>
+  </div>
+
+ 
+
+
+
+
+  
+  
+  
