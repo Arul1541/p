@@ -17,7 +17,6 @@ export class ProductsComponent implements OnInit {
   noProducts: boolean = false;
   cartCount: number = 0;
 
-
   constructor(private productService: ProductsService) { }
 
   ngOnInit(): void {
@@ -26,16 +25,26 @@ export class ProductsComponent implements OnInit {
 
   getProductList(): void {
     this.products = this.productService.getProducts();
-    this.filteredProducts = [...this.products]
+    if (this.products.length === 0) {
+      this.noProducts = true;
+      this.paginatedProducts = [];
+      return;
+    }
+    this.filteredProducts = [...this.products];
     this.calculatePages();
   }
 
   calculatePages(): void {
     this.totalPages = Math.ceil(this.filteredProducts.length / this.itemsPerPage);
+    this.currentPage = Math.min(this.currentPage, this.totalPages) || 1; 
     this.updatePaginatedProducts();
   }
 
   updatePaginatedProducts(): void {
+    if (this.filteredProducts.length === 0) {
+      this.paginatedProducts = [];
+      return;
+    }
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
     this.paginatedProducts = this.filteredProducts.slice(start, end);
@@ -55,33 +64,29 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-
-  onFilterChange(filter: Filter): Product[] | void {
-    if (filter.searchTerm == "" && filter.category == "") {
+  onFilterChange(filter: Filter): void {
+    if (!filter.searchTerm && !filter.category) {
       this.getProductList();
+      return;
     }
-    else {
-      if (filter.searchTerm) {
-        this.filteredProducts = this.products.filter(product => {
-          return (product.name.toLowerCase().includes(filter.searchTerm.toLowerCase()));
-        });
-      }
-      if (filter.category) {
-        this.filteredProducts = this.products.filter(product => {
-          return ((product.category) == (filter.category));
-        });
-      }
+    this.filteredProducts = this.products;
+    if (filter.searchTerm) {
+      this.filteredProducts = this.filteredProducts.filter(product => 
+        product.name.toLowerCase().includes(filter.searchTerm.toLowerCase())
+      );
+    }
+    if (filter.category) {
+      this.filteredProducts = this.filteredProducts.filter(product => 
+        product.category === filter.category
+      );
     }
 
-
-    if (this.filteredProducts.length > 0) {
-      this.calculatePages();
-      this.noProducts = false
+    if (filter.category == "") {
+      this.getProductList();
+      
     }
-    else {
-      this.calculatePages();
-      this.noProducts = true
-    }
+    this.noProducts = this.filteredProducts.length === 0;
+    this.calculatePages();
   }
 
   onSortChanged(sortOption: string): void {
@@ -92,6 +97,8 @@ export class ProductsComponent implements OnInit {
       case 'price-desc':
         this.filteredProducts.sort((a, b) => b.price - a.price);
         break;
+      case 'reset':
+        this.getProductList();
     }
     this.updatePaginatedProducts();
   }
@@ -100,5 +107,4 @@ export class ProductsComponent implements OnInit {
     this.cartCount++;
     alert(`${product.name} is added to cart`);
   }
-
 }
